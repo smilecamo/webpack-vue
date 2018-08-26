@@ -27,14 +27,14 @@ import Item from './item.vue'
 import Tabs from './tabs.vue'
 let id = 0
 export default {
-  data() {
+  data () {
     return {
       todos: [],
       filter: 'all'
     }
   },
   methods: {
-    addTodo(e) {
+    addTodo (e) {
       // 第一项添加 unshift()
       this.todos.unshift(
         {
@@ -46,26 +46,26 @@ export default {
       )
       e.target.value = ''
     },
-    deleteTodo(id) {
-      this.todos.splice(this.todos.findIndex(todo => todo.id === id),1)
+    deleteTodo (id) {
+      this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
     },
-    toggleFilter(state) {
+    toggleFilter (state) {
       this.filter = state
     },
-    clearAllCompleted() {
+    clearAllCompleted () {
       this.todos = this.todos.filter(todo => !todo.completed)
     }
   },
   computed: {
-    filteredTodos() {
-      if(this.filter === 'all') {
+    filteredTodos () {
+      if (this.filter === 'all') {
         return this.todos
       }
       const completed = this.filter === 'completed'
       return this.todos.filter(todo => completed === todo.completed)
     }
   },
-  components:{
+  components: {
     Item,
     Tabs
   }

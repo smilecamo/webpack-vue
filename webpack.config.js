@@ -97,7 +97,7 @@ if(isDev) {
       // 在浏览器中显示
       errors: true
     },
-    // 打开新页面
+    // 打开新页面 
     // open: true,
     hot: true
   }

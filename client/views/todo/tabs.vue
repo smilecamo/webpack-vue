@@ -27,23 +27,23 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
-      states: ['all','active','completed']
+      states: ['all', 'active', 'completed']
     }
   },
   computed: {
     // 找到为false的节点
-    unFinishedTodoLength() {
+    unFinishedTodoLength () {
       return this.todos.filter(todo => !todo.completed).length
     }
   },
   methods: {
-    claerAllCompleted() {
+    claerAllCompleted () {
       this.$emit('clearAllCompleted')
     },
-    toggleFilter(state) {
-      this.$emit('toggle',state)
+    toggleFilter (state) {
+      this.$emit('toggle', state)
     }
   }
 }
