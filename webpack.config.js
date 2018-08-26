@@ -5,6 +5,8 @@ const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // 生成html页面
 const HTMLPlugin = require('html-webpack-plugin')
+// 单独打包css
+const extractPlugin = require('extract-text-webpack-plugin')
 // 设置是否是开发化境  这里的process.env 在 package.json 中通过cross-env获取
 const isDev = process.env.NODE_ENV === 'development'
 // webpack配置项
@@ -16,7 +18,7 @@ const config = {
   // output:出口文件
   output: {
     // filename:文件名
-    filename: 'bundle.js',
+    filename: 'bundle.[hash:8].js',
     path: path.join(__dirname,'dist')
   },
   plugins: [
@@ -46,30 +48,6 @@ const config = {
         loader: 'babel-loader'
       },
       {
-        test: /\.css$/,
-        use: [
-          // css-loader: 负责从文件中读取css文件
-          // style-loader: 负责把css写到文件中
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.styl(us)?$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              // 如果有前缀就不加
-              sourceMap: true
-            }
-          },
-          'stylus-loader'
-        ]
-      },
-      {
         test: /\.(jpg|gif|jpeg|png)/,
         use: [
           {
@@ -91,6 +69,23 @@ const config = {
 if(isDev) {
   // 调试代码工具
   config.devtool = '#cheap-module-eval-source-map'
+  config.module.rules.push(
+      {
+        test: /\.styl(us)?$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              // 如果有前缀就不加
+              sourceMap: true
+            }
+          },
+          'stylus-loader'
+        ]
+      }
+  )
   // webpack-dev-server 配置项
   config.devServer = {
     // 端口
@@ -112,5 +107,48 @@ if(isDev) {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
-} 
+} else{
+  // 生产环境
+  // 生产环境要使用chunkhash
+  config.output.filename ='[name].[chunkhash:8].js',
+  // 打包框架文件
+  config.entry = {
+    app: path.join(__dirname,'src/index.js'),
+    // 框架
+    vendor: ['vue']
+  }
+  config.module.rules.push(
+    // 单独打包css
+    {
+      test: /\.styl(us)?$/,
+      use: extractPlugin.extract({
+        fallback: 'style-loader',
+        use: [
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              // 如果有前缀就不加
+              sourceMap: true
+            }
+          },
+          'stylus-loader'
+        ]
+      })
+  }
+),
+config.plugins.push(
+  // 单独打包css，文件名
+  new extractPlugin('style.[contentHash:8].css'),
+  // 单独框架输出
+  new webpack.optimize.CommonsChunkPlugin({
+    // 这里的名字必须和上面保持一致
+    name: 'vendor'
+  }),
+  // 把webpack文件单独打包
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'runtime'
+  })
+)
+}
 module.exports = config
