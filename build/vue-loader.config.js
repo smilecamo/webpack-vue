@@ -7,7 +7,7 @@ module.exports = (isDev) => {
     // hotReload: false // 根据环境变量是否热重载
     cssModules: {
       // css命名
-      localIdentName: isDev? '[path]-[name]-[hash:base64:5]': '[hash:base64:5]',
+      localIdentName: isDev ? '[path]-[name]-[hash:base64:5]': '[hash:base64:5]',
       // 驼峰命名
       camelCase: true
     },
