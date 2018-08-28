@@ -8,13 +8,14 @@ const createVueLoaderOpations = require('./vue-loader.config')
 const config = {
   // 编译运行目标
   target: 'web',
-  // entry:入口文件  path.join:路径拼接  __dirname:根目录 
+  // entry:入口文件  path.join:路径拼接  __dirname:根目录
   entry: path.join(__dirname, '../client/index.js'),
   // output:出口文件
   output: {
     // filename:文件名
     filename: 'bundle.[hash:8].js',
-    path: path.join(__dirname,'../dist')
+    path: path.join(__dirname,'../dist'),
+    publicPath: '/public/'
   },
   module: {
     // rules:编译规则

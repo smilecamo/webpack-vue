@@ -25,7 +25,9 @@ const defaultPlugins = [
     }
   }),
   // html设置
-  new HTMLPlugin()
+  new HTMLPlugin({
+    template: path.join(__dirname,'template.html')
+  })
 ]
 // webpack-dev-server 配置项
 const devServer = {
@@ -38,7 +40,12 @@ const devServer = {
     // 在浏览器中显示
     errors: true
   },
-  // 打开新页面 
+  // 映射路由
+  historyApiFallback: {
+    // 这里的public是base里面的
+    index: '/public/index.html'
+  },
+  // 打开新页面
   // open: true,
   hot: true
 }

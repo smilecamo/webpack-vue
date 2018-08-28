@@ -2,8 +2,12 @@
   <div id='app'>
     <div id="cover"></div>
     <Header></Header>
-    <to-do></to-do>
+    <!-- 命名路由使用 -->
+    <router-link to="/app/123">app</router-link>
+    <router-link to="/login">login</router-link>
+    <router-view />
     <Footer></Footer>
+    <router-view name='a'></router-view>
   </div>
 </template>
 
@@ -17,6 +21,9 @@ export default{
     Header,
     Footer,
     ToDo
+  },
+  mounted () {
+    console.log(this.$route)
   }
 }
 </script>

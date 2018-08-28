@@ -1,6 +1,6 @@
 <template>
   <section class="real-app">
-    <input 
+    <input
     type="text"
     class="add-input"
     autofocus='autofocus'
@@ -19,6 +19,7 @@
     @toggle='toggleFilter'
     @clearAllCompleted= 'clearAllCompleted'
     ></Tabs>
+    <router-view></router-view>
   </section>
 </template>
 
@@ -27,6 +28,12 @@ import Item from './item.vue'
 import Tabs from './tabs.vue'
 let id = 0
 export default {
+  props: {
+    id
+  },
+  mounted () {
+    console.log(this.id)
+  },
   data () {
     return {
       todos: [],
