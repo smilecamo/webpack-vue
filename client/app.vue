@@ -2,6 +2,8 @@
   <div id='app'>
     <div id="cover"></div>
     <Header></Header>
+    <p>{{couter}}</p>
+    <p>{{fullName}}</p>
     <!-- 命名路由使用 -->
     <router-link to="/app/123">app</router-link>
     <router-link to="/login">login</router-link>
@@ -12,6 +14,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import Header from './layout/header.vue'
 import Footer from './layout/footer.jsx'
 import ToDo from './views/todo/todo.vue'
@@ -23,7 +26,34 @@ export default{
     ToDo
   },
   mounted () {
-    console.log(this.$route)
+    console.log(this.$store)
+    let i = 1
+    setInterval(() => {
+      this.$store.commit('updataCount', i++)
+    }, 1000)
+  },
+  computed: {
+    // 第一种形式
+    // ...mapState(['count']),
+    // 第二种形式
+    // ...mapState({
+    //   couter: 'count'
+    // }),
+    // 第三种形式
+    ...mapState({
+      couter: (state) => state.count
+    }),
+    // 最后得形式
+    // count () {
+    //   // 获取store中得值
+    //   return this.$store.state.count
+    // },
+    // 第一种getters
+    ...mapGetters(['fullName'])
+    // 第二种
+    // getName () {
+    //   return this.$store.getters.fullName
+    // }
   }
 }
 </script>

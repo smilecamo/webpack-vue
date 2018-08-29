@@ -32,7 +32,7 @@ export default {
     id
   },
   mounted () {
-    console.log(this.id)
+    // console.log(this.id)
   },
   data () {
     return {
