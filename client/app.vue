@@ -14,7 +14,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import {
+  mapState,
+  mapGetters,
+  mapMutations,
+  mapActions
+} from 'vuex'
 import Header from './layout/header.vue'
 import Footer from './layout/footer.jsx'
 import ToDo from './views/todo/todo.vue'
@@ -28,9 +33,28 @@ export default{
   mounted () {
     console.log(this.$store)
     let i = 1
+    // 第一种
+    // setInterval(() => {
+    //   this.$store.commit('updataCount', i++)
+    // }, 1000)
+    // 第二种通过...mapMutations
     setInterval(() => {
-      this.$store.commit('updataCount', i++)
+      this.updataCount(i++)
     }, 1000)
+    // 异步通过actions
+    // this.$store.dispatch('updateCountAsync', {
+    //   num: 8,
+    //   time: 1000
+    // })
+    // 第二种方式通过...mapActions
+    // this.updateCountAsync({
+    //   num: 8,
+    //   time: 1000
+    // })
+  },
+  methods: {
+    ...mapActions(['updateCountAsync']),
+    ...mapMutations(['updataCount'])
   },
   computed: {
     // 第一种形式
